@@ -1,6 +1,6 @@
 ﻿namespace MultiLocalDeploy
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         /// Wymagana zmienna projektanta.
@@ -35,9 +35,13 @@
             this.lblSource = new System.Windows.Forms.Label();
             this.btnDeploy = new System.Windows.Forms.Button();
             this.tbLog = new System.Windows.Forms.TextBox();
-            this.pbDeploy = new System.Windows.Forms.ProgressBar();
             this.lbFolders = new System.Windows.Forms.ListBox();
             this.cbSkipConfigFiles = new System.Windows.Forms.CheckBox();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.pbDeploy = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // fbdSourceFolder
@@ -50,7 +54,7 @@
             this.btnTarget.Name = "btnTarget";
             this.btnTarget.Size = new System.Drawing.Size(75, 23);
             this.btnTarget.TabIndex = 1;
-            this.btnTarget.Text = "Target...";
+            this.btnTarget.Text = "Add target...";
             this.btnTarget.UseVisualStyleBackColor = true;
             this.btnTarget.Click += new System.EventHandler(this.BtnTarget_Click);
             // 
@@ -94,15 +98,8 @@
             this.tbLog.Name = "tbLog";
             this.tbLog.ReadOnly = true;
             this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbLog.Size = new System.Drawing.Size(333, 234);
+            this.tbLog.Size = new System.Drawing.Size(333, 263);
             this.tbLog.TabIndex = 6;
-            // 
-            // pbDeploy
-            // 
-            this.pbDeploy.Location = new System.Drawing.Point(455, 284);
-            this.pbDeploy.Name = "pbDeploy";
-            this.pbDeploy.Size = new System.Drawing.Size(333, 23);
-            this.pbDeploy.TabIndex = 7;
             // 
             // lbFolders
             // 
@@ -111,6 +108,7 @@
             this.lbFolders.Name = "lbFolders";
             this.lbFolders.Size = new System.Drawing.Size(223, 394);
             this.lbFolders.TabIndex = 8;
+            this.lbFolders.SelectedIndexChanged += new System.EventHandler(this.lbFolders_SelectedIndexChanged);
             this.lbFolders.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lbFolders_KeyUp);
             // 
             // cbSkipConfigFiles
@@ -118,28 +116,60 @@
             this.cbSkipConfigFiles.AutoSize = true;
             this.cbSkipConfigFiles.Checked = true;
             this.cbSkipConfigFiles.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbSkipConfigFiles.Location = new System.Drawing.Point(16, 61);
+            this.cbSkipConfigFiles.Location = new System.Drawing.Point(455, 313);
             this.cbSkipConfigFiles.Name = "cbSkipConfigFiles";
             this.cbSkipConfigFiles.Size = new System.Drawing.Size(107, 17);
             this.cbSkipConfigFiles.TabIndex = 9;
             this.cbSkipConfigFiles.Text = "Skip *.config files";
             this.cbSkipConfigFiles.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(16, 61);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(203, 97);
+            this.treeView1.TabIndex = 10;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pbDeploy,
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 450);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(803, 22);
+            this.statusStrip1.TabIndex = 11;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // pbDeploy
+            // 
+            this.pbDeploy.Name = "pbDeploy";
+            this.pbDeploy.Size = new System.Drawing.Size(100, 16);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(803, 472);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.treeView1);
             this.Controls.Add(this.cbSkipConfigFiles);
             this.Controls.Add(this.lbFolders);
-            this.Controls.Add(this.pbDeploy);
             this.Controls.Add(this.tbLog);
             this.Controls.Add(this.btnDeploy);
             this.Controls.Add(this.lblSource);
             this.Controls.Add(this.btnSource);
             this.Controls.Add(this.btnTarget);
-            this.Name = "Form1";
+            this.Name = "Main";
             this.Text = "Multi Local Deploy";
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -153,9 +183,12 @@
         private System.Windows.Forms.Label lblSource;
         private System.Windows.Forms.Button btnDeploy;
         private System.Windows.Forms.TextBox tbLog;
-        private System.Windows.Forms.ProgressBar pbDeploy;
         private System.Windows.Forms.ListBox lbFolders;
         private System.Windows.Forms.CheckBox cbSkipConfigFiles;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar pbDeploy;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 

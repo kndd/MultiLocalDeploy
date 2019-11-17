@@ -1,21 +1,13 @@
-﻿using MultiLocalDeploy.Properties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MultiLocalDeploy
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        public Form1()
+        public Main()
         {
             InitializeComponent();
         }
@@ -33,11 +25,8 @@ namespace MultiLocalDeploy
 
         private void BtnTarget_Click(object sender, EventArgs e)
         {
-            fbdTargetFolders.RootFolder = Environment.SpecialFolder.MyComputer;
-            if (fbdTargetFolders.ShowDialog() == DialogResult.OK)
-            {
-                lbFolders.Items.AddRange(Directory.GetDirectories(fbdTargetFolders.SelectedPath));
-            }
+            var mfd = new MultipleFolderDialog();
+            if (mfd.ShowDialog(this) == DialogResult.OK) lbFolders.Items.AddRange(mfd.FolderList.ToArray());
         }
 
         private void BtnDeploy_Click(object sender, EventArgs e)
@@ -46,9 +35,9 @@ namespace MultiLocalDeploy
                 return;
 
             var result = MessageBox.Show($"Do you want to deploy {lbFolders.SelectedItem}",
-                                         "Warning!",
-                                         MessageBoxButtons.YesNo,
-                                         MessageBoxIcon.Question);
+                "Warning!",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
             if (result != DialogResult.Yes)
                 return;
@@ -78,12 +67,12 @@ namespace MultiLocalDeploy
             //    Log($"Copy folder {dirPath}");
             //}
 
-            Parallel.ForEach(directories, (dirPath) =>
+            Task.Run(() => Parallel.ForEach(directories, dirPath =>
             {
                 Directory.CreateDirectory(dirPath.Replace(sourceFolder, pathToDeploy));
-                //pbDeploy.Value++;
-                //Log($"Copy folder {dirPath}");
-            });
+                pbDeploy.Value++;
+                Log($"Copy folder {dirPath}");
+            }));
 
             //Copy all the files & Replaces any files with the same name
             //foreach (string newPath in files)
@@ -99,7 +88,7 @@ namespace MultiLocalDeploy
             //    Log($"Copy file {newPath}");
             //}
 
-            Parallel.ForEach(files, (newPath) =>
+            Task.Run(() => Parallel.ForEach(files, newPath =>
             {
                 if (cbSkipConfigFiles.Checked && newPath.EndsWith("web.config"))
                 {
@@ -108,9 +97,9 @@ namespace MultiLocalDeploy
                 }
 
                 File.Copy(newPath, newPath.Replace(sourceFolder, pathToDeploy), true);
-                //pbDeploy.Value++;
-                //Log($"Copy file {newPath}");
-            });
+                pbDeploy.Value++;
+                Log($"Copy file {newPath}");
+            }));
         }
 
         private void SetProgresBar(int steps)
@@ -137,10 +126,12 @@ namespace MultiLocalDeploy
 
         private void lbFolders_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Delete)
-            {
-                lbFolders.Items.RemoveAt(lbFolders.SelectedIndex);
-            }
+            if (e.KeyCode == Keys.Delete) lbFolders.Items.RemoveAt(lbFolders.SelectedIndex);
+        }
+
+        private void lbFolders_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lbFolders.SelectedIndex >= 0) LogClear();
         }
     }
 }
