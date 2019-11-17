@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MultiLocalDeploy.Extensions;
+using MultiLocalDeploy.Properties;
 
 namespace MultiLocalDeploy
 {
@@ -13,13 +17,30 @@ namespace MultiLocalDeploy
         }
 
         public string SourceFolderPath { get; private set; }
+        public List<string> TargetFolderList { get; set; }
 
+        private void Main_Load(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.SourceFolder))
+            {
+                SourceFolderPath = Properties.Settings.Default.SourceFolder;
+
+                tvSourceFolder.LoadAllStructure(SourceFolderPath);
+                tvSourceFolder.ExpandAll();
+            }
+
+            if (Properties.Settings.Default.TargetFolderList != null)
+            {
+                TargetFolderList = Properties.Settings.Default.TargetFolderList.Cast<string>().ToList();
+                lbFolders.Items.AddRange(TargetFolderList.ToArray());
+            }
+        }
+        
         private void BtnSource_Click(object sender, EventArgs e)
         {
             if (fbdSourceFolder.ShowDialog() == DialogResult.OK)
             {
                 SourceFolderPath = fbdSourceFolder.SelectedPath;
-                lblSource.Text = SourceFolderPath;
             }
         }
 
@@ -43,6 +64,7 @@ namespace MultiLocalDeploy
                 return;
 
             var pathToDeploy = lbFolders.SelectedItem.ToString();
+            LogClear();
             DeployFiles(SourceFolderPath, pathToDeploy);
             Log("******************");
             Log("DONE!");
@@ -55,59 +77,23 @@ namespace MultiLocalDeploy
                 SearchOption.AllDirectories);
             var files = Directory.GetFiles(sourceFolder, "*.*",
                 SearchOption.AllDirectories);
-            SetProgresBar(directories.Length + files.Length);
-
-            LogClear();
-
-            //Now Create all of the directories
-            //foreach (string dirPath in directories)
-            //{
-            //    Directory.CreateDirectory(dirPath.Replace(sourceFolder, pathToDeploy));
-            //    pbDeploy.Value++;
-            //    Log($"Copy folder {dirPath}");
-            //}
-
-            Task.Run(() => Parallel.ForEach(directories, dirPath =>
+            
+            Parallel.ForEach(directories, dirPath =>
             {
                 Directory.CreateDirectory(dirPath.Replace(sourceFolder, pathToDeploy));
-                pbDeploy.Value++;
-                Log($"Copy folder {dirPath}");
-            }));
-
-            //Copy all the files & Replaces any files with the same name
-            //foreach (string newPath in files)
-            //{
-            //    if (cbSkipConfigFiles.Checked && newPath.EndsWith("web.config"))
-            //    {
-            //        pbDeploy.Value++;
-            //        continue;
-            //    }
-
-            //    File.Copy(newPath, newPath.Replace(sourceFolder, pathToDeploy), true);
-            //    pbDeploy.Value++;
-            //    Log($"Copy file {newPath}");
-            //}
-
-            Task.Run(() => Parallel.ForEach(files, newPath =>
+            });
+            
+            Parallel.ForEach(files, newPath =>
             {
                 if (cbSkipConfigFiles.Checked && newPath.EndsWith("web.config"))
                 {
-                    pbDeploy.Value++;
                     return;
                 }
 
                 File.Copy(newPath, newPath.Replace(sourceFolder, pathToDeploy), true);
-                pbDeploy.Value++;
-                Log($"Copy file {newPath}");
-            }));
+            });
         }
-
-        private void SetProgresBar(int steps)
-        {
-            pbDeploy.Maximum = steps;
-            pbDeploy.Value = 0;
-        }
-
+        
         private bool ValidateDeploy()
         {
             return !string.IsNullOrEmpty(SourceFolderPath) && lbFolders.SelectedItem != null;

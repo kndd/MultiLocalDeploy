@@ -22,5 +22,25 @@ namespace MultiLocalDeploy.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\konrad\\Desktop\\website")]
+        public string SourceFolder {
+            get {
+                return ((string)(this["SourceFolder"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
+            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
+            "tring>E:\\Websites\\dupa</string>\r\n</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection TargetFolderList {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["TargetFolderList"]));
+            }
+        }
     }
 }
