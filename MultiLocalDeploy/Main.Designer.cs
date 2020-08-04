@@ -39,6 +39,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.pbDeploy = new System.Windows.Forms.ToolStripProgressBar();
             this.tvSourceFolder = new System.Windows.Forms.TreeView();
+            this.cbRemoveBinFolder = new System.Windows.Forms.CheckBox();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -102,8 +103,6 @@
             // cbSkipConfigFiles
             // 
             this.cbSkipConfigFiles.AutoSize = true;
-            this.cbSkipConfigFiles.Checked = true;
-            this.cbSkipConfigFiles.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbSkipConfigFiles.Location = new System.Drawing.Point(389, 312);
             this.cbSkipConfigFiles.Name = "cbSkipConfigFiles";
             this.cbSkipConfigFiles.Size = new System.Drawing.Size(107, 17);
@@ -133,11 +132,22 @@
             this.tvSourceFolder.Size = new System.Drawing.Size(140, 394);
             this.tvSourceFolder.TabIndex = 12;
             // 
+            // cbRemoveBinFolder
+            // 
+            this.cbRemoveBinFolder.AutoSize = true;
+            this.cbRemoveBinFolder.Location = new System.Drawing.Point(389, 335);
+            this.cbRemoveBinFolder.Name = "cbRemoveBinFolder";
+            this.cbRemoveBinFolder.Size = new System.Drawing.Size(117, 17);
+            this.cbRemoveBinFolder.TabIndex = 13;
+            this.cbRemoveBinFolder.Text = "Remove /bin folder";
+            this.cbRemoveBinFolder.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(740, 470);
+            this.Controls.Add(this.cbRemoveBinFolder);
             this.Controls.Add(this.tvSourceFolder);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.cbSkipConfigFiles);
@@ -146,6 +156,7 @@
             this.Controls.Add(this.btnDeploy);
             this.Controls.Add(this.btnSource);
             this.Controls.Add(this.btnTarget);
+            this.MaximizeBox = false;
             this.Name = "Main";
             this.Text = "Multi Local Deploy";
             this.Load += new System.EventHandler(this.Main_Load);
@@ -168,6 +179,7 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar pbDeploy;
         private System.Windows.Forms.TreeView tvSourceFolder;
+        private System.Windows.Forms.CheckBox cbRemoveBinFolder;
     }
 }
 
